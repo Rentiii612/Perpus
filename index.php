@@ -90,10 +90,10 @@ switch ($page) {
 
     // Halaman Beranda (default)
     default:
-        echo "<h2>Selamat datang di Aplikasi Perpustakaan 📚</h2>";
+        echo "<h2>Selamat datang di perpustakaan universitas MAROMAK OAN 📚</h2>";
         echo "<ul>
-                <li><a href='?page=buku'>Kelola Buku</a></li>
-                <li><a href='?page=anggota'>Kelola Anggota</a></li>
+                <li><a href='?page=buku'>Data Buku</a></li>
+                <li><a href='?page=anggota'>Daftar Anggota</a></li>
                 <li><a href='?page=peminjaman'>Kelola Peminjaman</a></li>
               </ul>";
         break;
