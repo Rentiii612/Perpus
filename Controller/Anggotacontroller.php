@@ -1,49 +1,33 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../Models/Anggotamodel.php'; // path absolut relatif ke file ini
 
-
-class AnggotaController {
+class Anggotacontroller {
     public static function index() {
-        global $conn;
-        $query = "SELECT * FROM anggota";
-        $result = mysqli_query($conn, $query);
-        include '../Anggota/tampil.php';
+        $anggota = Anggotamodel::getAll();
+        include __DIR__ . '/../Views/Anggota/tampil.php';
     }
 
     public static function create() {
-        include '../Anggota/tambah.php';
+        include __DIR__ . '/../Views/Anggota/tambah.php';
     }
 
     public static function store($data) {
-        global $conn;
-        $nama = $data['nama'];
-        $alamat = $data['alamat'];
-        $query = "INSERT INTO anggota (nama, alamat) VALUES ('$nama', '$alamat')";
-        mysqli_query($conn, $query);
+        Anggotamodel::insert($data);
         header("Location: index.php?controller=anggota&action=index");
     }
 
     public static function edit($id) {
-        global $conn;
-        $query = "SELECT * FROM anggota WHERE id_anggota = $id";
-        $result = mysqli_query($conn, $query);
-        $anggota = mysqli_fetch_assoc($result);
-        include '../Anggota/edit.php';
+        $anggota = Anggotamodel::getById($id);
+        include __DIR__ . '/../Views/Anggota/edit.php';
     }
 
     public static function update($id, $data) {
-        global $conn;
-        $nama = $data['nama'];
-        $alamat = $data['alamat'];
-        $query = "UPDATE anggota SET nama='$nama', alamat='$alamat' WHERE id_anggota=$id";
-        mysqli_query($conn, $query);
+        Anggotamodel::update($id, $data);
         header("Location: index.php?controller=anggota&action=index");
     }
 
     public static function delete($id) {
-        global $conn;
-        $query = "DELETE FROM anggota WHERE id_anggota = $id";
-        mysqli_query($conn, $query);
+        Anggotamodel::delete($id);
         header("Location: index.php?controller=anggota&action=index");
     }
 }
