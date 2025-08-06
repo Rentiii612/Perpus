@@ -24,7 +24,7 @@
     <input type="number" name="tahun_terbit" required><br><br>
 
     <label>Stok</label><br>
-    <input type="number" name="stok" required><br><br>
+    <input type="number" name="jumlah_tersedia" required><br><br>
 
     <button type="submit">Simpan</button>
 </form>

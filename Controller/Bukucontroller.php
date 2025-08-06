@@ -16,24 +16,25 @@ class Bukucontroller
     }
 
     public static function store()
-    {
-        $data = [
-            'buku_id' => $_POST['buku_id'],
-            'kategori_id' => $_POST['kategori_id'],
-            'nama_buku' => $_POST['nama_buku'],
-            'judul' => $_POST['judul'],
-            'penulis' => $_POST['penulis'],
-            'penerbit' => $_POST['penerbit'],
-            'tahun_terbit' => $_POST['tahun_terbit'],
-            'stok' => $_POST['jumlah_tersedia']
-        ];
+{
+    $data = [
+        'kategori_id' => $_POST['kategori_id'],
+        'nama_buku' => $_POST['nama_buku'],
+        'judul' => $_POST['judul'],
+        'penulis' => $_POST['penulis'],
+        'penerbit' => $_POST['penerbit'],
+        'tahun_terbit' => $_POST['tahun_terbit'],
+        'stok' => $_POST['stok'],
+        'jumlah_tersedia' => $_POST['stok'] // default sama dengan stok
+    ];
 
-        $model = new Bukumodel();
-        $model->insert($data);
+    $model = new Bukumodel();
+    $model->insert($data);
 
-        header("Location: index.php?page=buku&aksi=index");
-        exit();
-    }
+    header("Location: index.php?page=buku&aksi=index");
+    exit();
+}
+
 
     public static function edit($id) {
         $model = new Bukumodel();
