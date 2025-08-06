@@ -1,11 +1,12 @@
 <?php
-require_once './config/database.php';
+require_once './config.php';
 
 class PeminjamanModel {
     public function getAll() {
         global $pdo;
         $stmt = $pdo->query("
-            SELECT peminjaman.id, anggota.nama AS nama_anggota, buku.judul AS judul_buku, peminjaman.tanggal_pinjam, peminjaman.tanggal_kembali
+            SELECT peminjaman.id_peminjaman, anggota.nama AS nama_anggota, buku.judul AS judul_buku, 
+                   peminjaman.tanggal_pinjam, peminjaman.tanggal_kembali, peminjaman.status
             FROM peminjaman
             JOIN anggota ON peminjaman.id_anggota = anggota.id
             JOIN buku ON peminjaman.id_buku = buku.id
@@ -21,7 +22,7 @@ class PeminjamanModel {
 
     public function delete($id) {
         global $pdo;
-        $stmt = $pdo->prepare("DELETE FROM peminjaman WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM peminjaman WHERE id_peminjaman = ?");
         $stmt->execute([$id]);
     }
 }

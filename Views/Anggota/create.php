@@ -1,7 +1,29 @@
-<h2>Tambah Anggota</h2>
-<form method="post" action="?page=anggota-store">
-    <label>Nama: <input type="text" name="nama" required></label><br>
-    <label>NIM: <input type="text" name="nim" required></label><br>
-    <label>Jurusan: <input type="text" name="jurusan" required></label><br>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Tambah Anggota</title>
+    <link rel="stylesheet" type="text/css" href="public/style.css">
+</head>
+<body>
+
+<form action="index.php?page=anggota-store" method="post">
+    <label>Nama:</label>
+    <input type="text" name="nama" required>
+
+    <label>Alamat:</label>
+    <textarea name="alamat" required></textarea>
+
+    <label>Nomor Telepon:</label>
+    <input type="text" name="nomor_telepon" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Tanggal Bergabung:</label>
+    <input type="date" name="tanggal_bergabung" required>
+
     <button type="submit">Simpan</button>
 </form>
+
+</body>
+</html>

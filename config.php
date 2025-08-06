@@ -1,6 +1,11 @@
 <?php
-$koneksi = new mysqli("localhost", "root", "", "Perpus");
-if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$db   = 'perpus';
+
+$conn = mysqli_connect($host, $user, $pass, $db);
+
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
-?>

@@ -1,21 +1,31 @@
 <h2>Tambah Peminjaman</h2>
+<link rel="stylesheet" type="text/css" href="public/style.css">
 <form method="post" action="?page=peminjaman-store">
-    <label>Anggota:</label>
-    <select name="id_anggota">
-        <?php foreach ($anggota as $a): ?>
-            <option value="<?= $a['id'] ?>"><?= $a['nama'] ?></option>
-        <?php endforeach; ?>
-    </select><br>
+    <label>ID Peminjaman:</label><br>
+    <input type="text" name="peminjaman_id" required><br><br>
 
-    <label>Buku:</label>
-    <select name="id_buku">
-        <?php foreach ($buku as $b): ?>
-            <option value="<?= $b['id'] ?>"><?= $b['judul'] ?></option>
-        <?php endforeach; ?>
-    </select><br>
+    <label>ID Anggota:</label><br>
+    <input type="text" name="anggota_id" required><br><br>
 
-    <label>Tanggal Pinjam: <input type="date" name="tanggal_pinjam"></label><br>
-    <label>Tanggal Kembali: <input type="date" name="tanggal_kembali"></label><br>
+
+    <label>ID Buku:</label><br>
+    <input type="text" name="buku_id" required><br><br>
+
+
+    <label>ID Petugas:</label><br>
+    <input type="text" name="petugas_id" required><br><br>
+
+    <label>Tanggal Pinjam:</label><br>
+    <input type="date" name="tanggal_pinjam" required><br><br>
+
+    <label>Tanggal Kembali:</label><br>
+    <input type="date" name="tanggal_kembali" required><br><br>
+
+    <label>Status:</label><br>
+    <select name="status" required>
+        <option value="Dipinjam">Dipinjam</option>
+        <option value="Dikembalikan">Dikembalikan</option>
+    </select><br><br>
 
     <button type="submit">Simpan</button>
 </form>

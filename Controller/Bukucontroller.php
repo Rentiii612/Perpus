@@ -1,51 +1,59 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/Bukumodel.php';
 
-class BukuController {
-    public static function index() {
-        global $conn;
-        $query = "SELECT * FROM buku";
-        $result = mysqli_query($conn, $query);
-        include '../buku/tampil.php';
+class Bukucontroller
+{
+    public static function index()
+    {
+        $model = new Bukumodel();
+        $buku = $model->getAll(); // Ambil semua data buku
+        require_once __DIR__ . '/../Views/buku/index.php'; // Tampilkan ke view
     }
 
-    public static function create() {
-        include '../buku/tambah.php';
+    public static function create()
+    {
+        require_once __DIR__ . '/../Views/buku/create.php';
     }
 
-    public static function store($data) {
-        global $conn;
-        $judul = $data['judul'];
-        $pengarang = $data['pengarang'];
-        $id_kategori = $data['id_kategori'];
-        $query = "INSERT INTO buku (judul, pengarang, id_kategori) VALUES ('$judul', '$pengarang', $id_kategori)";
-        mysqli_query($conn, $query);
-        header("Location: index.php?controller=buku&action=index");
+    public static function store()
+    {
+        $data = [
+            'buku_id' => $_POST['buku_id'],
+            'kategori_id' => $_POST['kategori_id'],
+            'nama_buku' => $_POST['nama_buku'],
+            'judul' => $_POST['judul'],
+            'penulis' => $_POST['penulis'],
+            'penerbit' => $_POST['penerbit'],
+            'tahun_terbit' => $_POST['tahun_terbit'],
+            'stok' => $_POST['jumlah_tersedia']
+        ];
+
+        $model = new Bukumodel();
+        $model->insert($data);
+
+        header("Location: index.php?page=buku&aksi=index");
+        exit();
     }
 
     public static function edit($id) {
-        global $conn;
-        $query = "SELECT * FROM buku WHERE id_buku = $id";
-        $result = mysqli_query($conn, $query);
-        $buku = mysqli_fetch_assoc($result);
-        include '../buku/edit.php';
+        $model = new Bukumodel();
+        $data = $model->getById($id);
+        include __DIR__ . '/../Views/buku/edit.php';
     }
 
-    public static function update($id, $data) {
-        global $conn;
-        $judul = $data['judul'];
-        $pengarang = $data['pengarang'];
-        $id_kategori = $data['id_kategori'];
-        $query = "UPDATE buku SET judul='$judul', pengarang='$pengarang', id_kategori=$id_kategori WHERE id_buku=$id";
-        mysqli_query($conn, $query);
-        header("Location: index.php?controller=buku&action=index");
+    public static function update($id) {
+        $model = new Bukumodel();
+        $model->update($id, $_POST);
+        header("Location: index.php?page=buku&aksi=index");
+        exit;
     }
 
-    public static function delete($id) {
-        global $conn;
-        $query = "DELETE FROM buku WHERE id_buku = $id";
-        mysqli_query($conn, $query);
-        header("Location: index.php?controller=buku&action=index");
+    public static function delete($id)
+    {
+        $model = new Bukumodel();
+        $model->delete($id);
+        header("Location: index.php?page=buku&aksi=index");
+        exit();
     }
 }
 ?>

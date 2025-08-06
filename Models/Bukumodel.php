@@ -1,36 +1,99 @@
 <?php
-require_once './config/database.php';
+require_once './config.php';
 
-class BukuModel {
+class Bukumodel {
+    private $conn;
+
+    public function __construct() {
+        $this->conn = new mysqli("localhost", "root", "", "perpus");
+        if ($this->conn->connect_error) {
+            die("Koneksi gagal: " . $this->conn->connect_error);
+        }
+    }
+
     public function getAll() {
-        global $pdo;
-        $stmt = $pdo->query("SELECT * FROM buku");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM buku";
+        $result = $this->conn->query($sql);
+        return $result;
     }
 
     public function getById($id) {
-        global $pdo;
-        $stmt = $pdo->prepare("SELECT * FROM buku WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conn->prepare("SELECT * FROM buku WHERE buku_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 
     public function insert($data) {
-        global $pdo;
-        $stmt = $pdo->prepare("INSERT INTO buku (judul, pengarang, tahun, kategori) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$data['judul'], $data['pengarang'], $data['tahun'], $data['kategori']]);
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+
+        $stmt = $this->conn->prepare("INSERT INTO buku (
+            buku_id, kategori_id, nama_buku, judul, penulis, penerbit, tahun_terbit, jumlah_tersedia
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+        if (!$stmt) {
+            die("❌ Prepare gagal: " . $this->conn->error);
+        }
+
+        $stmt->bind_param(
+            "iissssii",
+            $data['buku_id'],
+            $data['kategori_id'],
+            $data['nama_buku'],
+            $data['judul'],
+            $data['penulis'],
+            $data['penerbit'],
+            $data['tahun_terbit'],
+            $data['stok'] // ini akan masuk ke kolom jumlah_tersedia
+        );
+
+        if ($stmt->execute()) {
+            echo "✅ Data berhasil disimpan!";
+        } else {
+            die("❌ Gagal simpan: " . $stmt->error);
+        }
     }
 
     public function update($id, $data) {
-        global $pdo;
-        $stmt = $pdo->prepare("UPDATE buku SET judul = ?, pengarang = ?, tahun = ?, kategori = ? WHERE id = ?");
-        $stmt->execute([$data['judul'], $data['pengarang'], $data['tahun'], $data['kategori'], $id]);
+        $stmt = $this->conn->prepare("UPDATE buku SET 
+            kategori_id = ?, 
+            nama_buku = ?, 
+            judul = ?, 
+            penulis = ?, 
+            penerbit = ?, 
+            tahun_terbit = ?, 
+            jumlah_tersedia = ? 
+            WHERE buku_id = ?");
+
+        $stmt->bind_param(
+            "issssiii",
+            $data['kategori_id'],
+            $data['nama_buku'],
+            $data['judul'],
+            $data['penulis'],
+            $data['penerbit'],
+            $data['tahun_terbit'],
+            $data['stok'],
+            $id
+        );
+
+        if ($stmt->execute()) {
+            echo "✅ Data berhasil diperbarui!";
+        } else {
+            die("❌ Gagal update: " . $stmt->error);
+        }
     }
 
     public function delete($id) {
-        global $pdo;
-        $stmt = $pdo->prepare("DELETE FROM buku WHERE id = ?");
-        $stmt->execute([$id]);
+        $stmt = $this->conn->prepare("DELETE FROM buku WHERE buku_id = ?");
+        $stmt->bind_param("i", $id);
+        if ($stmt->execute()) {
+            echo "✅ Data berhasil dihapus!";
+        } else {
+            die("❌ Gagal hapus: " . $stmt->error);
+        }
     }
 }
 ?>
